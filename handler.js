@@ -4,7 +4,7 @@ import {
   Page,
   View,
   Document,
-  renderToBuffer,
+  renderToStream,
 } from '@react-pdf/renderer';
 
 const Doc = () => (
@@ -34,7 +34,7 @@ module.exports.genPDF = async (event) => {
 
     // Render PDF to Stream
     const stream = await renderToStream(
-      <Document />
+      <Doc />
     );
 
     // Getting the file name
