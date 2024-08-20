@@ -61,6 +61,7 @@ resources:
 plugins:
   - serverless-webpack
   - webpack-node-externals
+
 package:
   individually: true
 

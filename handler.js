@@ -1,40 +1,37 @@
 'use strict';
-import {
-  Text,
-  Page,
-  View,
-  Document,
-  renderToStream,
-} from '@react-pdf/renderer';
+import React from "react";
+import { renderToStream } from '@react-pdf/renderer';
+import Statement from "./Components/Statement";
 
-const Doc = () => (
-  <Document>
-    <Page size="A6">
-      <View
-        style={{
-          height: '100%',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text>new document</Text>
-      </View>
-    </Page>
-  </Document>
-);
+const defaultHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type,Accept,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+  "Access-Control-Allow-Methods": "OPTIONS,POST",
+  "Access-Control-Allow-Credentials": true,
+}
+
+const streamToBuffer = (stream) => {
+  return new Promise(function (res) {
+    const chunks = [];
+
+    stream.on("data", (chunk) => chunks.push(chunk));
+
+    stream.on("end", () => {
+      const buffer = Buffer.concat(chunks);
+      res(buffer);
+    });
+  });
+}
 
 
-module.exports.genPDF = async (event) => {
+exports.genPDF = async (event) => {
   console.log('started...');
 
   try {
-    // Getting the body
-    const body = event.isBase64Encoded ? base64ToJson(event.body) : JSON.parse(event.body);
-    const { pageTitle, awesomeVariableA, awesomeVariableB } = body;
 
     // Render PDF to Stream
     const stream = await renderToStream(
-      <Doc />
+      <Statement />
     );
 
     // Getting the file name
